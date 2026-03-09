@@ -1,4 +1,5 @@
-/*using UnityEngine;
+using Actividad2;
+using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.TextCore.Text;
 public class CharacterMovement : MonoBehaviour, ICharacterComponent
@@ -96,4 +97,3 @@ public class CharacterMovement : MonoBehaviour, ICharacterComponent
 
     public Character ParentCharacter { get; set; }
 }
-*/

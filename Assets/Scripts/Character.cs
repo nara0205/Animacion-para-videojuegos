@@ -1,4 +1,5 @@
-/*using UnityEngine;
+using Actividad2;
+using UnityEngine;
 
 
 [DefaultExecutionOrder(-1)]
@@ -32,4 +33,3 @@ public class Character : MonoBehaviour
 
     }
 }
-*/

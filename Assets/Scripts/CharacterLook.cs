@@ -1,4 +1,5 @@
-/*using System;
+using Actividad2;
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.TextCore.Text;
@@ -71,4 +72,3 @@ public class CharacterLook : MonoBehaviour, ICharacterComponent
 
 
 }
-*/

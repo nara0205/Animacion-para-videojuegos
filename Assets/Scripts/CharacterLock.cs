@@ -1,4 +1,5 @@
-/*using UnityEngine;
+using Actividad2;
+using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.TextCore.Text;
 
@@ -62,4 +63,3 @@ public class CharacterLock : MonoBehaviour, ICharacterComponent
 
 #endif
 }
-*/

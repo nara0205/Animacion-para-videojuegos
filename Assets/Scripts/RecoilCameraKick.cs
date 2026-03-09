@@ -1,4 +1,4 @@
-/*using System.Collections;
+using System.Collections;
 using Unity.Cinemachine;
 using UnityEngine;
 
@@ -74,4 +74,3 @@ public class RecoilCameraKick : MonoBehaviour
 
     }
 }
-*/
