@@ -1,74 +1,72 @@
-using Actividad2;
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.TextCore.Text;
+using UnityEngine.PlayerLoop;
 
-public class CharacterLook : MonoBehaviour, ICharacterComponent
+namespace Clases.Clase_2.Scripts
 {
-
-    [SerializeField] private Transform target;
-
-
-    [SerializeField] private FloatDampener horizontalDampener;
-    [SerializeField] private FloatDampener verticalDampener;
-
-    [SerializeField] private float horizontalRotationSpeed;
-    [SerializeField] private float verticalRotationSpeed;
-
-    [SerializeField] private Vector2 verticalRotationLimits;
-
-    private float verticalRotation;
-
-    public void OnLook(InputAction.CallbackContext ctx)
+    public class CharacterLook : MonoBehaviour, ICharacterComponent
     {
+        [SerializeField] private Transform target;
 
-        Vector2 inputValue = ctx.ReadValue<Vector2>();
-        inputValue = inputValue / new Vector2(Screen.width, Screen.height);
-        horizontalDampener.TargetValue = inputValue.x;
-        verticalDampener.TargetValue = inputValue.y;
+        [SerializeField] private FloatDampener horizontalDampener;
+        [SerializeField] private FloatDampener verticalDampener;
 
-    }
+        [SerializeField] private float horizontalRotationSpeed;
+        [SerializeField] private float verticalRotationSpeed;
+        [SerializeField]private Vector2 verticalRotationLimits;
 
-    private void Update()
-    {
-        horizontalDampener.Update();
-        verticalDampener.Update();
-
-        ApplyLookRotation();
-
-
-    }
-
-    private void ApplyLookRotation()
-    {
-        if (target == null)
+        [SerializeField] private float lockTurnSpeed = 360f;
+        
+        private float verticalRotation;
+        public void OnLook(InputAction.CallbackContext ctx)
         {
-            throw new NullReferenceException("Target transform is not assigned.");
+            Vector2 inputValue = ctx.ReadValue<Vector2>();
+            inputValue = inputValue / new Vector2(Screen.width, Screen.height);
+            horizontalDampener.TargetValue = inputValue.x;
+            verticalDampener.TargetValue = inputValue.y;
         }
-        if (ParentCharacter.LockTarget != null)
+        private void ApplyLookRotation()
         {
-            Vector3 lookDirection = (ParentCharacter.LockTarget.position - transform.position).normalized;
-            Quaternion rotation = Quaternion.LookRotation(lookDirection, Vector3.up);
 
-            target.rotation = rotation;
-            return;
+            if (target == null)
+            {
+                throw new NullReferenceException("Look target is null");
+            }
+
+            if (ParentCharacter != null && ParentCharacter.LockTarget != null)
+            {
+                Vector3 toTarget = ParentCharacter.LockTarget.position - target.position;
+                if (toTarget.sqrMagnitude > 0.0001f)
+                {
+                    Quaternion desired = Quaternion.LookRotation(toTarget.normalized, Vector3.up);
+                    target.rotation = Quaternion.RotateTowards(target.rotation, desired, lockTurnSpeed * Time.deltaTime);
+
+                    Vector3 euler = target.localEulerAngles;
+                    verticalRotation = euler.x;
+                    if (verticalRotation > 180f) verticalRotation -= 360f;
+                    verticalRotation = Mathf.Clamp(verticalRotation, verticalRotationLimits.x, verticalRotationLimits.y);
+                    euler.x = verticalRotation;
+                    target.localEulerAngles = euler;
+                }
+
+                return;
+            }
+
+            target.RotateAround(target.position, transform.up, horizontalDampener.CurrentValue * horizontalRotationSpeed * 360 * Time.deltaTime);
+            verticalRotation += verticalDampener.CurrentValue * verticalRotationSpeed * 360 * Time.deltaTime;
+            verticalRotation = Mathf.Clamp(verticalRotation,verticalRotationLimits.x, verticalRotationLimits.y);
+
+            Vector3 manualEuler = target.localEulerAngles;
+            manualEuler.x = verticalRotation;
+            target.localEulerAngles = manualEuler;
         }
-
-
-        target.RotateAround(target.position, transform.up, horizontalDampener.CurrentValue * horizontalRotationSpeed * 360 * Time.deltaTime);
-        verticalRotation += verticalDampener.CurrentValue * verticalRotationSpeed * 360 * Time.deltaTime;
-        verticalRotation = Mathf.Clamp(verticalRotation, verticalRotationLimits.x, verticalRotationLimits.y);
-
-        Vector3 euler = target.localEulerAngles;
-        euler.x = verticalRotation;
-        target.localEulerAngles = euler;
-
-
+        private void Update()
+        {
+            horizontalDampener.Update();
+            verticalDampener.Update();
+            ApplyLookRotation();
+        }
+        [field:SerializeField] public Character ParentCharacter { get; set; }
     }
-
-
-    [field: SerializeField] public Character ParentCharacter { get; set; }
-
-
 }
