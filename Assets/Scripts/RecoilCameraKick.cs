@@ -2,75 +2,73 @@ using System.Collections;
 using Unity.Cinemachine;
 using UnityEngine;
 
-public class RecoilCameraKick : MonoBehaviour
+
+namespace Clases.Clase_2.Scripts
 {
 
-    [SerializeField] private CinemachineCamera[] _cameras;
-    private CinemachineBasicMultiChannelPerlin[] perlins;
-    private float[] baseAmplitud;
-
-
-    private void Awake()
+    public class RecoilCameraKick : MonoBehaviour
     {
+        [SerializeField] private CinemachineCamera[] _cameras;
+        private CinemachineBasicMultiChannelPerlin[] perlins;
+        private float[] baseAmplitud;
 
-        perlins = new CinemachineBasicMultiChannelPerlin[_cameras.Length];
-        baseAmplitud = new float[_cameras.Length];
-
-        for (int i = 0; i < _cameras.Length; i++)
+        private void Awake()
         {
-            if (!_cameras[i]) continue;
-            perlins[i] = _cameras[i].GetComponent<CinemachineBasicMultiChannelPerlin>();
+            perlins = new CinemachineBasicMultiChannelPerlin[_cameras.Length];
+            baseAmplitud = new float[_cameras.Length];
 
-            if (perlins[i]) baseAmplitud[i] = perlins[i].AmplitudeGain;
-        }
-
-
-    }
-
-
-    public void Kick(float strength, float peakDuration, float recoverDuration)
-    {
-        StopAllCoroutines();
-        StartCoroutine(KickCoroutine(strength, peakDuration, recoverDuration));
-    }
-
-    IEnumerator KickCoroutine(float strength, float peak, float recover)
-    {
-        float t = 0f;
-        while (t < peak)
-        {
-
-            t += Time.deltaTime;
-            float k = t / Mathf.Max(0.0001f, peak);
-
-            for (int i = 0; i < perlins.Length; i++)
+            for (int i = 0; i < _cameras.Length; i++)
             {
-                if (!perlins[i]) continue;
-                perlins[i].AmplitudeGain = Mathf.Lerp(baseAmplitud[i], baseAmplitud[i] + strength, k);
+                if (!_cameras[i]) continue;
+                perlins[i] = _cameras[i].GetComponent<CinemachineBasicMultiChannelPerlin>();
+                if (perlins[i]) baseAmplitud[i] = perlins[i].AmplitudeGain;
             }
-            yield return null;
         }
 
-        t = 0f;
-
-        while (t < recover)
+        public void Kick(float strength, float peakDuration, float recoverDuration)
         {
+            StopAllCoroutines();
+            StartCoroutine(KickCoroutine(strength, peakDuration, recoverDuration));
+        }
 
-            float k = t / Mathf.Max(0.0001f, recover);
-            for (int i = 0; i < perlins.Length; i++)
+        IEnumerator KickCoroutine(float strength, float peak, float recover)
+        {
+            float t = 0f;
+
+            while (t < peak)
             {
-                if (!perlins[i]) continue;
-                perlins[i].AmplitudeGain = Mathf.Lerp(baseAmplitud[i] + strength, baseAmplitud[i], k);
+                t += Time.deltaTime;
+                float K = t / Mathf.Max(0.0001f, peak);
+
+                for (int i = 0; i < perlins.Length; i++)
+                {
+                    if (perlins[i]) perlins[i].AmplitudeGain = Mathf.Lerp(baseAmplitud[i], baseAmplitud[i] + strength, K);
+                    yield return null; 
+
+                }
+
+                t = 0f;
+                while(t < recover)
+                {
+                    t += Time.deltaTime;
+                    float k = t / Mathf.Max(0.0001f, recover);
+                    for (int i = 0; i < perlins.Length; i++)
+                        if (perlins[i]) perlins[i].AmplitudeGain = Mathf.Lerp(baseAmplitud[i] + strength, baseAmplitud[i], k);
+                    yield return null;
+                }
+
+                for (int i = 0;i < perlins.Length; i++) 
+                     if (perlins[i])
+                        perlins[i].AmplitudeGain = baseAmplitud[i];
+
             }
-            yield return null;
 
         }
 
-        for (int i = 0; i < perlins.Length; i++)
-        {
-            if (!perlins[i]) continue;
-            perlins[i].AmplitudeGain = baseAmplitud[i];
-        }
+
+
 
     }
+
+
 }

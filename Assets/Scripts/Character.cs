@@ -1,36 +1,40 @@
-using Actividad2;
-using Clases.Clase_2.Scripts;
+using System;
 using UnityEngine;
 
-
-[DefaultExecutionOrder(-1)]
-public class Character : MonoBehaviour
+namespace Clases.Clase_2.Scripts
 {
-
-    private bool isAiming;
-    private Transform lockTarget;
-
-    public bool IsAiming
+    [DefaultExecutionOrder(-1)]
+    public class Character : MonoBehaviour
     {
+        private bool isAiming;
+        private Transform lockTarget;
 
-        get => isAiming;
-        set => isAiming = value;
-    }
-    public Transform LockTarget { get => lockTarget; set => lockTarget = value; }
-
-    private void Awake()
-    {
-        RegisterComponents();
-    }
-
-
-    private void RegisterComponents()
-    {
-        foreach (ICharacterComponent component in GetComponentsInChildren<ICharacterComponent>())
+        public bool IsAiming
         {
-            component.ParentCharacter = this;
+            get => isAiming;
+            set => isAiming = value;
+        }
+        
+
+        public Transform LockTarget
+        {
+            get => lockTarget;
+            set => lockTarget = value;
+
         }
 
+        private void Awake()
+        {
+            RegisterComponents();
+            Cursor.lockState = CursorLockMode.Locked;
+        }
 
+        private void RegisterComponents()
+        {
+            foreach (ICharacterComponent component in GetComponentsInChildren<ICharacterComponent>())
+            {
+                component.ParentCharacter = this;
+            }
+        }
     }
 }

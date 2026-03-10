@@ -1,99 +1,73 @@
-using Clases.Clase_2.Scripts;
+using System;
+using System.Numerics;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.TextCore.Text;
-public class CharacterMovement : MonoBehaviour, ICharacterComponent
+using UnityEngine.PlayerLoop;
+using Quaternion = UnityEngine.Quaternion;
+using Vector2 = UnityEngine.Vector2;
+using Vector3 = UnityEngine.Vector3;
+
+namespace Clases.Clase_2.Scripts
 {
-
-    private int _speedXHash;
-    private int _speedYHash;
-
-    [SerializeField] private FloatDampener speedX;
-    [SerializeField] private FloatDampener speedY;
-
-    [SerializeField] private float angularSpeed;
-
-    [SerializeReference] private Camera camera;
-
-    private Quaternion targetRotation;
-
-    private Animator _animator;
-
-    private Rigidbody rb;
-
-    [SerializeField] private float moveSpeed = 5f;
-    private void Awake()
+    public class CharacterMovement : MonoBehaviour ,ICharacterComponent
     {
-        rb = GetComponent<Rigidbody>();
-        _animator = GetComponent<Animator>();
-        _speedXHash = Animator.StringToHash("SpeedX");
-        _speedYHash = Animator.StringToHash("SpeedY");
-    }
-    private void MoveCharacter()
-    {
-        Vector3 moveDirection = new Vector3(speedX.CurrentValue, 0, speedY.CurrentValue);
-        moveDirection = Quaternion.Euler(0, camera.transform.eulerAngles.y, 0) * moveDirection;
 
-        transform.position += moveDirection * moveSpeed * Time.deltaTime;
-    }
+        [SerializeField] private FloatDampener speedX;
+        [SerializeField] private FloatDampener speedY;
+        [SerializeField] private Camera camera;
+        [SerializeField] private float angularSpeed;
+        private Quaternion targetRotation;
+        
+        private int _speedXHash;
+        private int _speedYHash;
+        private Animator _animator;
 
-    private void SolveCharacterRotation()
-    {
-        Vector3 floorNormal = transform.up;
-        Vector3 cameraRealFoward = camera.transform.forward;
-
-        float angleInterpolator = Mathf.Abs(Vector3.Dot(cameraRealFoward, floorNormal));
-        Vector3 cameraFoward = Vector3.Lerp(cameraRealFoward, camera.transform.up, angleInterpolator).normalized;
-
-        Vector3 characterForward = Vector3.ProjectOnPlane(cameraFoward, floorNormal).normalized;
-
-        Debug.DrawLine(transform.position, transform.position + characterForward * 3, Color.green, 5);
-        targetRotation = Quaternion.LookRotation(characterForward, floorNormal);
-
-
-    }
-    private void FixedUpdate()
-    {
-        Vector3 moveDirection = new Vector3(speedX.CurrentValue, 0, speedY.CurrentValue);
-        moveDirection = Quaternion.Euler(0, camera.transform.eulerAngles.y, 0) * moveDirection;
-
-        rb.linearVelocity = new Vector3(
-            moveDirection.x * moveSpeed,
-            rb.linearVelocity.y,
-            moveDirection.z * moveSpeed
-        );
-    }
-
-
-    public void OnMove(InputAction.CallbackContext ctx)
-    {
-        Vector2 inputValue = ctx.ReadValue<Vector2>();
-        speedX.TargetValue = inputValue.x;
-        speedY.TargetValue = inputValue.y;
-    }
-
-    private void Update()
-    {
-        speedX.Update();
-        speedY.Update();
-        _animator.SetFloat(_speedXHash, speedX.CurrentValue);
-        _animator.SetFloat(_speedYHash, speedY.CurrentValue);
-
-        SolveCharacterRotation();
-
-        if (!ParentCharacter.IsAiming)
+        private void Awake()
         {
-            ApplyCharacterRotation();
+            _animator = GetComponent<Animator>();
+            _speedXHash = Animator.StringToHash("SpeedX");
+            _speedYHash = Animator.StringToHash("SpeedY");
         }
 
-    }
+        private void SolveCharacterRotation()
+        {
+#if UNITY_EDITOR
+            // Uncomment temporarily if you need to debug rotation solve.
+            // Debug.Log("[CharacterMovement] Solve rotations");
+#endif
+            Vector3 floorNormal = transform.up;
+            Vector3 cameraRealForward = camera.transform.forward;
+            float angleInterpolator = Mathf.Abs(Vector3.Dot(cameraRealForward, floorNormal));
+            Vector3 cameraForward = Vector3.Lerp(cameraRealForward, camera.transform.up, angleInterpolator).normalized;
+            Vector3 characterForward = Vector3.ProjectOnPlane(cameraForward,floorNormal).normalized;
+            Debug.DrawLine(transform.position, transform.position + characterForward*3, Color.green,5);
+            targetRotation = Quaternion.LookRotation(characterForward,floorNormal);
+        }
 
-    private void ApplyCharacterRotation()
-    {
-        float motionMagnitud = Mathf.Sqrt(speedX.TargetValue * speedX.TargetValue + speedY.TargetValue * speedY.TargetValue);
-        float rotationSpeed = Mathf.SmoothStep(0, .01f, motionMagnitud);
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, angularSpeed * rotationSpeed);
-    }
+        public void OnMove(InputAction.CallbackContext ctx)
+        {
+            Vector2 inputValue = ctx.ReadValue<Vector2>();
+            speedX.TargetValue = inputValue.x;
+            speedY.TargetValue = inputValue.y;
+        }
+        private void Update()
+        {
+            speedX.Update();
+            speedY.Update();
+            _animator.SetFloat(_speedXHash,speedX.CurrentValue);
+            _animator.SetFloat(_speedYHash,speedY.CurrentValue);
+            SolveCharacterRotation();
+            if (!ParentCharacter.IsAiming)
+                ApplyCharacterRotation();
+        }
 
-    public Character ParentCharacter { get; set; }
+        private void ApplyCharacterRotation()
+        {
+            float motionMagnitud = Mathf.Sqrt(speedX.TargetValue * speedX.TargetValue + speedY.TargetValue * speedY.TargetValue);
+            float rotationSpeed = Mathf.SmoothStep(0, .01f, motionMagnitud);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation,targetRotation,angularSpeed*rotationSpeed);
+        }
+
+        public Character ParentCharacter { get; set; }
+    }
 }
