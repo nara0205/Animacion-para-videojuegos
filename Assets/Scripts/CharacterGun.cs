@@ -1,4 +1,5 @@
-/*using Unity.VisualScripting;
+/*using Clases.Clase_2.Scripts;
+using Unity.VisualScripting;
 using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.InputSystem;

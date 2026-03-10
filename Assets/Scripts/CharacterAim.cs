@@ -1,4 +1,5 @@
-/*using Unity.Cinemachine;
+using Clases.Clase_2.Scripts;
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.InputSystem;
@@ -44,5 +45,5 @@ public class CharacterAim : MonoBehaviour, ICharacterComponent
         animator.SetLayerWeight(1, aimDampener.CurrentValue);
     }
 }
-*/
+
 

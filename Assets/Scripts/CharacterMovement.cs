@@ -1,4 +1,4 @@
-using Actividad2;
+using Clases.Clase_2.Scripts;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.TextCore.Text;
