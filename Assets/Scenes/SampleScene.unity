@@ -183,10 +183,10 @@ PrefabInstance:
       addedObject: {fileID: 1328152605}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ba8955b8b4e3a914daf04601e3cfa989, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1328152611}
+      addedObject: {fileID: 1328152610}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ba8955b8b4e3a914daf04601e3cfa989, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1328152610}
+      addedObject: {fileID: 1328152611}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ba8955b8b4e3a914daf04601e3cfa989, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1328152609}
@@ -233,7 +233,7 @@ Transform:
   m_GameObject: {fileID: 97810288}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.09, y: 1.617648, z: 2.9853573}
+  m_LocalPosition: {x: -4.07441, y: 1.627648, z: 3.3079076}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -251,7 +251,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68bb026fafb42b14791938953eaace77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineBasicMultiChannelPerlin
-  NoiseProfile: {fileID: 11400000, guid: 8608ec81ee27a15488d33f9dad239e91, type: 2}
+  NoiseProfile: {fileID: 11400000, guid: a3dacaec0287d7444b4bd276816e1666, type: 2}
   PivotOffset: {x: 0, y: 0, z: 0}
   AmplitudeGain: 1
   FrequencyGain: 1
@@ -269,7 +269,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineThirdPersonFollow
   Damping: {x: 0.1, y: 0.5, z: 0.3}
-  ShoulderOffset: {x: -4.09, y: 0.25, z: 4.98}
+  ShoulderOffset: {x: 0.31, y: 0.26, z: 0.9}
   VerticalArmLength: 0.4
   CameraSide: 1
   CameraDistance: 2
@@ -341,7 +341,7 @@ AimConstraint:
   serializedVersion: 2
   m_Weight: 1
   m_RotationAtRest: {x: -4.4702225, y: 0.0000017859911, z: 0.0000143677225}
-  m_RotationOffset: {x: 11.052909, y: -177.59183, z: 0.6468145}
+  m_RotationOffset: {x: 18.857815, y: -10.466077, z: -4.1985946}
   m_AimVector: {x: 0, y: 0, z: 1}
   m_UpVector: {x: 0, y: 1, z: 0}
   m_WorldUpVector: {x: 0, y: 1, z: 0}
@@ -615,7 +615,7 @@ Transform:
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.29440975, y: 1.617648, z: -1.4171929}
+  m_LocalPosition: {x: 0.32, y: 1.597648, z: -0.6646427}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -928,7 +928,7 @@ Transform:
   m_GameObject: {fileID: 1000136476}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.9676481, z: 0.0053572655}
+  m_LocalPosition: {x: -4.38441, y: 0.9676481, z: 4.4079075}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -944,8 +944,8 @@ PositionConstraint:
   m_Enabled: 1
   serializedVersion: 2
   m_Weight: 1
-  m_TranslationAtRest: {x: 4.38441, y: -0, z: -4.40255}
-  m_TranslationOffset: {x: 4.38441, y: 0, z: -4.40255}
+  m_TranslationAtRest: {x: -4.38441, y: 0.9676481, z: 4.4079075}
+  m_TranslationOffset: {x: 0, y: 0, z: 0}
   m_AffectTranslationX: 1
   m_AffectTranslationY: 1
   m_AffectTranslationZ: 1
@@ -1511,7 +1511,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Clases.Clase_2.Scripts.CharacterAim
   aimCamera: {fileID: 1802468651}
   aimDampener:
-    _smoothTime: 0
+    _smoothTime: 0.1
   aimConstraint: {fileID: 144884221}
 --- !u!114 &1328152609
 MonoBehaviour:
@@ -1565,11 +1565,10 @@ MonoBehaviour:
   horizontalDampener:
     _smoothTime: 0.3
   verticalDampener:
-    _smoothTime: 0
+    _smoothTime: 0.3
   horizontalRotationSpeed: 20
   verticalRotationSpeed: -10
   verticalRotationLimits: {x: -60, y: 75}
-  lockTurnSpeed: 360
   <ParentCharacter>k__BackingField: {fileID: 0}
 --- !u!1 &1612835357
 GameObject:
@@ -1630,7 +1629,7 @@ Transform:
   m_GameObject: {fileID: 1802433591}
   serializedVersion: 2
   m_LocalRotation: {x: -7.639787e-10, y: 0.000000025358077, z: 0.00000012500163, w: 1}
-  m_LocalPosition: {x: -0.13730033, y: -1.617648, z: -2.3792572}
+  m_LocalPosition: {x: -0.17, y: -0.16, z: 1.52}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1664,7 +1663,7 @@ Transform:
   m_GameObject: {fileID: 1802468647}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -4.09, y: 1.617648, z: 2.9853573}
+  m_LocalPosition: {x: -4.0644097, y: 1.597648, z: 3.7379074}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1682,7 +1681,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68bb026fafb42b14791938953eaace77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineBasicMultiChannelPerlin
-  NoiseProfile: {fileID: 11400000, guid: 8608ec81ee27a15488d33f9dad239e91, type: 2}
+  NoiseProfile: {fileID: 11400000, guid: a3dacaec0287d7444b4bd276816e1666, type: 2}
   PivotOffset: {x: 0, y: 0, z: 0}
   AmplitudeGain: 1
   FrequencyGain: 1
@@ -1700,7 +1699,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineThirdPersonFollow
   Damping: {x: 0.1, y: 0.5, z: 0.3}
-  ShoulderOffset: {x: -4.09, y: 0.25, z: 4.98}
+  ShoulderOffset: {x: 0.32, y: 0.23, z: 1.33}
   VerticalArmLength: 0.4
   CameraSide: 1
   CameraDistance: 2
